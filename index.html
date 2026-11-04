@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="release-date" content="2026-12-01">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TECHNOLOGIC AI POWER</title>
+<meta name="description" content="TECHNOLOGIC AI POWER is a Windows desktop assistant for running AI models and agents on your own computer.">
+<meta property="og:title" content="TECHNOLOGIC AI POWER"><meta property="og:description" content="The Future of Technology.">
+<style>
+/* ===== TECHNOLOGIC brand tokens: the only place colours are defined ===== */
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark;
+--bg:#080D18;--bg2:#0B1220;--s1:#111B2D;--s2:#172338;
+--b6:#2563EB;--b5:#3B82F6;--b4:#60A5FA;
+--o6:#FF6A00;--o5:#FF8533;--o3:#FFB066;
+--tx:#F8FAFC;--tx2:#B8C4D6;--tx3:#8492A6;--bd:#263449;
+--ok:#22C55E;--warn:#F59E0B;--err:#EF4444;
+--bd2:#34445E;--bd3:#5E6C81;--ring:rgba(96,165,250,.28);--r:14px}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;color:var(--tx);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;background:radial-gradient(60vw 46vh at 12% -8%,rgba(37,99,235,.22),transparent 70%),radial-gradient(46vw 40vh at 100% 4%,rgba(255,106,0,.10),transparent 70%),radial-gradient(50vw 40vh at 0% 108%,rgba(255,106,0,.09),transparent 70%),radial-gradient(40vw 36vh at 100% 100%,rgba(59,130,246,.10),transparent 70%),var(--bg);background-repeat:no-repeat;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+a{color:var(--b4);text-decoration:none;transition:color .2s}a:hover{color:var(--tx);text-decoration:underline}img{max-width:100%;height:auto}
+:focus-visible{outline:2px solid var(--b4);outline-offset:3px;border-radius:8px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:var(--b6);color:var(--tx);padding:8px 12px;z-index:50}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:saturate(160%) blur(18px);border-bottom:1px solid var(--bd)}
+.bar{max-width:1080px;margin:auto;padding:0 22px;height:56px;display:flex;align-items:center;gap:8px}
+.logo{display:block;border-radius:10px}.logo img{height:30px;display:block}
+nav{display:flex;align-items:center;gap:2px;margin-left:24px;flex:1}
+nav a,.dd>button{color:var(--tx2);background:none;border:0;font:inherit;font-size:14px;padding:8px 12px;border-radius:999px;cursor:pointer;text-decoration:none;transition:background .2s,color .2s}
+nav a:hover,.dd>button:hover{color:var(--tx);background:var(--s2);text-decoration:none}
+nav a[aria-current="page"]{color:var(--tx);background:var(--s1);box-shadow:inset 0 -2px 0 var(--o6)}
+nav a:active,.dd>button:active{background:var(--s1)}
+.dd{position:relative}.menu{display:none;position:absolute;top:100%;left:0;min-width:210px;background:var(--s2);border:1px solid var(--bd2);border-radius:16px;padding:6px;box-shadow:0 20px 44px rgba(0,0,0,.45)}
+.dd:hover .menu,.dd:focus-within .menu{display:block}.menu a{display:block;border-radius:10px}
+.acc{display:flex;align-items:center;gap:6px;order:99;margin-left:auto}.acc .si{color:var(--tx2);font-size:14px;padding:8px 12px;border-radius:999px}.acc .si:hover{color:var(--tx);background:var(--s2);text-decoration:none}
+.burger{display:none;margin-left:auto;background:none;color:var(--tx);border:1px solid var(--bd);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px}.burger:hover{background:var(--s2)}
+/* Buttons: blue = main interface action, orange (.hot) = the one brand-accent action */
+.btn{display:inline-block;background:var(--b6);color:var(--tx)!important;font-weight:600;font-size:15px;border:0;border-radius:999px;padding:11px 22px;cursor:pointer;text-decoration:none!important;transition:filter .2s,box-shadow .2s,transform .1s}
+.btn:hover{filter:brightness(1.12);box-shadow:0 8px 24px rgba(37,99,235,.38)}.btn:active{transform:translateY(1px);filter:brightness(.94);box-shadow:none}
+.btn.hot{background:linear-gradient(135deg,var(--o6),var(--o5));color:var(--bg)!important}.btn.hot:hover{box-shadow:0 8px 24px rgba(255,106,0,.35)}
+.btn.sm{padding:7px 16px;font-size:14px}
+.btn.alt{background:transparent;color:var(--tx)!important;border:1px solid var(--bd2)}.btn.alt:hover{border-color:var(--b5);background:var(--s1);box-shadow:none;filter:none}
+.btn[disabled]{background:var(--s2);color:var(--tx3)!important;cursor:not-allowed;box-shadow:none;filter:none;transform:none}
+main{max-width:1080px;margin:auto;padding:0 22px 40px;animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+section{padding:72px 0}h1{font-size:clamp(36px,5.8vw,68px);line-height:1.04;letter-spacing:-.03em;margin:.2em 0;font-weight:700}h1,h2{text-wrap:balance}h2{font-size:clamp(28px,4vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0 0 .4em;font-weight:700}h3{font-size:19px;margin:0 0 .3em}
+.hero h1{background:linear-gradient(180deg,var(--tx) 50%,var(--tx2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(18px,2.2vw,24px);color:var(--tx2);max-width:640px}.mu{color:var(--tx2)}.c{text-align:center}.c .lead{margin:0 auto}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.c .row{justify-content:center}
+.hero{padding:88px 0 40px}.shot{margin:40px 0 0;border:1px solid var(--bd2);border-radius:20px;overflow:hidden;background:var(--bg2);box-shadow:0 40px 90px rgba(0,0,0,.5),0 0 0 1px rgba(96,165,250,.06)}.shot img{display:block;width:100%}.cap{color:var(--tx3);font-size:14px;margin-top:12px}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px}
+.tag{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--o3)}
+.lab{font-size:13px;color:var(--tx2);background:var(--s2);border:1px solid var(--bd);border-radius:999px;padding:2px 10px;white-space:nowrap}
+dl{margin:0}dl div{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid var(--bd)}dt{color:var(--tx3)}dd{margin:0;text-align:right}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--bd);vertical-align:top}th{color:var(--tx3);font-weight:500;font-size:14px}.wrap{overflow-x:auto}
+.note{color:var(--tx2);border-left:2px solid var(--b5);padding:2px 0 2px 16px}
+label{display:block;font-size:14px;color:var(--tx2);margin:16px 0 6px}
+input,select,textarea{width:100%;font:inherit;color:var(--tx);background:var(--bg2);border:1px solid var(--bd3);border-radius:12px;padding:12px 14px;transition:border-color .2s,box-shadow .2s}
+input::placeholder,textarea::placeholder{color:var(--tx3)}
+input:hover,select:hover,textarea:hover{border-color:var(--tx2)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--b4);box-shadow:0 0 0 3px var(--ring)}
+input:user-invalid,textarea:user-invalid,select:user-invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(239,68,68,.18)}
+input:disabled,select:disabled,textarea:disabled{opacity:.5;cursor:not-allowed}
+input[type=checkbox]{accent-color:var(--b6)}
+.msg{margin-top:14px;color:var(--tx2)}.msg.err{color:var(--err)}.msg.warn{color:var(--warn)}
+.box{background:var(--s1);border:1px solid var(--bd);border-radius:22px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 24px}.tabs a{padding:7px 14px;border-radius:999px;color:var(--tx2)}.tabs a:hover{background:var(--s1);text-decoration:none;color:var(--tx)}.tabs a[aria-current="page"]{background:var(--s2);color:var(--tx);box-shadow:inset 0 -2px 0 var(--o6)}
+.docs{display:grid;grid-template-columns:250px 1fr;gap:32px}.docs ul{list-style:none;padding:0;margin:0}.docs li button{width:100%;text-align:left;background:none;border:0;color:var(--tx2);font:inherit;font-size:15px;padding:6px 10px;border-radius:8px;cursor:pointer}.docs li button:hover{background:var(--s1);color:var(--tx)}.docs li button[aria-current="true"]{background:var(--s2);color:var(--tx);box-shadow:inset 2px 0 0 var(--o6)}
+details{border-bottom:1px solid var(--bd);padding:16px 0}summary{cursor:pointer;font-weight:600;transition:color .2s}summary:hover{color:var(--b4)}
+footer{border-top:1px solid var(--bd);margin-top:40px;background:var(--bg2)}footer .in{max-width:1080px;margin:auto;padding:36px 22px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:28px;font-size:14px}footer b{display:block;margin-bottom:8px}footer a{display:block;color:var(--tx2);padding:3px 0}footer a:hover{color:var(--tx);text-decoration:none}.fine{max-width:1080px;margin:auto;padding:12px 22px 28px;color:var(--tx3);font-size:13px;background:var(--bg2)}
+body.acct nav,body.acct .acc,body.acct footer,body.acct .burger{display:none}body.acct .bar{justify-content:space-between}.back{display:none;color:var(--tx2);font-size:14px}body.acct .back{display:block}
+.auth{max-width:420px;margin:56px auto}.auth h1{font-size:clamp(30px,5vw,44px);text-align:center;background:none;color:var(--tx)}
+@media (max-width:860px){.docs{grid-template-columns:1fr}.burger{display:block}nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;margin:0;background:var(--bg);border-bottom:1px solid var(--bd);padding:10px 22px 18px}nav.open{display:flex}.acc{order:-1;margin-left:0;padding:6px 0 10px;border-bottom:1px solid var(--bd);margin-bottom:6px}.menu{display:block;position:static;box-shadow:none;border:0;background:none;padding:0 0 0 12px}.dd>button{text-align:left}section{padding:48px 0}.hero{padding-top:48px}}
+@media (prefers-reduced-motion:reduce){main{animation:none}html{scroll-behavior:auto}*{transition:none!important}}
+
+/* ===== Visual refinement pass · TECHNOLOGIC AI POWER ===== */
+:root{--r:18px;--bd:rgba(120,148,190,.20);--bd2:rgba(110,150,210,.32);--ring:rgba(76,145,255,.30)}
+body{background:radial-gradient(58rem 34rem at 8% -12%,rgba(37,99,235,.17),transparent 68%),radial-gradient(44rem 30rem at 96% 7%,rgba(255,106,0,.075),transparent 70%),radial-gradient(42rem 30rem at 88% 88%,rgba(37,99,235,.075),transparent 72%),var(--bg);background-attachment:fixed}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(32rem 24rem at 0% 52%,rgba(255,106,0,.035),transparent 72%)}
+body{font-size:16px;line-height:1.68;letter-spacing:.005em}
+.wrap{max-width:1160px}
+section{padding:clamp(58px,7vw,88px) 0}
+.hero{padding:clamp(70px,9vw,112px) 0 54px;position:relative}
+.hero:has(.shot){isolation:isolate}
+.hero:has(.shot)::before{content:"";position:absolute;z-index:-1;width:min(70vw,780px);height:360px;left:50%;top:30px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(37,99,235,.13),rgba(255,106,0,.045) 42%,transparent 72%);filter:blur(22px);pointer-events:none}
+h1{font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-.045em;margin:.24em 0 .32em}
+h2{font-size:clamp(27px,3.7vw,43px);letter-spacing:-.035em;line-height:1.12;margin-bottom:.55em}
+h3{font-size:19px;line-height:1.3;letter-spacing:-.015em}
+.lead{font-size:clamp(17px,2vw,21px);line-height:1.65;max-width:690px}
+.hero .lead{max-width:720px}
+.box,article,.shot,details,.auth{border:1px solid var(--bd);border-radius:var(--r);background:linear-gradient(145deg,rgba(20,34,56,.88),rgba(11,18,32,.92));box-shadow:0 16px 44px rgba(0,0,0,.16)}
+article,.box{padding:clamp(20px,3vw,30px)}
+.three{gap:18px}
+.three>div{padding:24px;border:1px solid var(--bd);border-radius:16px;background:linear-gradient(145deg,rgba(20,34,56,.72),rgba(11,18,32,.68));transition:transform .2s,border-color .2s,background .2s}
+.three>div:hover{transform:translateY(-3px);border-color:var(--bd2);background:linear-gradient(145deg,rgba(24,43,72,.86),rgba(11,18,32,.82))}
+.btn{min-height:46px;padding:11px 20px;border-radius:12px;font-weight:650;letter-spacing:.005em;box-shadow:0 8px 24px rgba(37,99,235,.16)}
+.btn.hot{box-shadow:0 8px 24px rgba(255,106,0,.14)}
+.btn.alt{box-shadow:none}
+input,select,textarea{border:1px solid var(--bd2);border-radius:11px;background:rgba(7,13,24,.72);padding:13px 14px;min-height:46px;color:var(--tx);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ring);outline-offset:2px;border-color:var(--b4)}
+.auth{padding:clamp(24px,4vw,38px);margin:clamp(36px,6vw,70px) auto;max-width:470px;box-shadow:0 28px 70px rgba(0,0,0,.26),0 0 45px rgba(37,99,235,.06)}
+.auth h1{font-size:clamp(31px,4vw,42px);margin:0 0 12px}
+.auth form{margin-top:26px}
+.auth label{display:block;margin:15px 0 7px;color:var(--tx2);font-size:14px;font-weight:600}
+.auth input{width:100%}
+.auth .row .btn{width:100%;justify-content:center}
+.auth .msg{margin-top:14px;min-height:24px;font-size:14px}
+.auth .msg.err{color:#FCA5A5}.auth .msg.ok{color:#86EFAC}.auth .msg.warn{color:#FCD34D}
+.msg:empty{display:none}
+@media(max-width:640px){body{font-size:15px}.hero{padding-top:58px}.three{grid-template-columns:1fr}.three>div{padding:20px}.auth{margin:28px auto;padding:22px}}
+
+/* ===== Final visual pass: restrained animated orange brand light ===== */
+body{position:relative;isolation:isolate;background-color:var(--bg);background-image:radial-gradient(58rem 34rem at 8% -12%,rgba(37,99,235,.16),transparent 68%),radial-gradient(44rem 30rem at 96% 7%,rgba(255,106,0,.065),transparent 70%),radial-gradient(42rem 30rem at 88% 88%,rgba(37,99,235,.065),transparent 72%)}
+.ambient-glow{position:fixed;z-index:0;inset:-24%;pointer-events:none;opacity:.72;filter:blur(34px);background:radial-gradient(ellipse 25rem 19rem at 72% 24%,rgba(255,106,0,.15),transparent 72%),radial-gradient(ellipse 20rem 16rem at 18% 72%,rgba(255,133,51,.095),transparent 74%),radial-gradient(ellipse 30rem 22rem at 48% 48%,rgba(37,99,235,.075),transparent 75%);animation:brandGlowDrift 24s ease-in-out infinite alternate;will-change:transform,background-position}
+@keyframes brandGlowDrift{0%{transform:translate3d(-2%,1%,0) scale(.96);background-position:0% 0%,100% 100%,50% 50%}50%{transform:translate3d(2%,-1%,0) scale(1.035);background-position:18% 24%,80% 65%,54% 42%}100%{transform:translate3d(-1%,-2%,0) scale(1);background-position:34% 12%,64% 82%,45% 58%}}
+header,main,footer{position:relative;z-index:1}
+.hero h1{ text-shadow:0 8px 38px rgba(37,99,235,.12) }
+.hero .tag{color:var(--o3)}
+.shot{box-shadow:0 30px 80px rgba(0,0,0,.38),0 0 34px rgba(37,99,235,.07)}
+.box,article,.three>div,details{backdrop-filter:blur(10px)}
+.btn.hot{background:linear-gradient(110deg,#FF6A00,#FF963D,#FF6A00);background-size:180% 100%;transition:background-position .45s,box-shadow .2s,transform .1s}
+.btn.hot:hover{background-position:100% 0;box-shadow:0 10px 30px rgba(255,106,0,.24)}
+@media(prefers-reduced-motion:reduce){.ambient-glow{animation:none;transform:none} .btn.hot{transition:none}}
+@media(max-width:640px){.ambient-glow{opacity:.48;filter:blur(26px)}}
+
+
+
+/* ===== TECHNOLOGIC AI POWER · verified visual refinement v2 ===== */
+:root{
+  --bg:#070C16;
+  --bg2:#0A1220;
+  --s1:#101C2E;
+  --s2:#16243A;
+  --bd:rgba(137,164,204,.22);
+  --bd2:rgba(110,157,224,.38);
+  --ring:rgba(96,165,250,.30);
+}
+html{background:var(--bg)}
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(62rem 38rem at 8% -14%,rgba(37,99,235,.18),transparent 68%),
+    radial-gradient(48rem 34rem at 96% 5%,rgba(255,106,0,.085),transparent 70%),
+    radial-gradient(44rem 34rem at 86% 94%,rgba(37,99,235,.075),transparent 72%);
+  background-attachment:fixed;
+}
+.ambient-glow{
+  position:fixed;z-index:0;inset:-28%;pointer-events:none;
+  opacity:.82;filter:blur(42px);
+  background:
+    radial-gradient(ellipse 28rem 22rem at 72% 22%,rgba(255,106,0,.20),transparent 72%),
+    radial-gradient(ellipse 22rem 18rem at 20% 72%,rgba(255,133,51,.12),transparent 74%),
+    radial-gradient(ellipse 34rem 25rem at 48% 48%,rgba(37,99,235,.09),transparent 76%);
+  animation:technologicAmbient 21s ease-in-out infinite alternate;
+  will-change:transform,background-position;
+}
+@keyframes technologicAmbient{
+  0%{transform:translate3d(-1.5%,1%,0) scale(.96);background-position:0% 0%,100% 100%,50% 50%}
+  48%{transform:translate3d(2%,-1.2%,0) scale(1.045);background-position:24% 30%,72% 58%,58% 42%}
+  100%{transform:translate3d(-.5%,-2%,0) scale(1);background-position:42% 12%,58% 86%,42% 62%}
+}
+header,main,footer{position:relative;z-index:1}
+.bar{min-height:64px}
+nav a,nav .dd>button,.acc .si{transition:background-color .22s ease,color .22s ease,transform .22s ease}
+nav a:hover,.dd>button:hover{transform:translateY(-1px)}
+.hero{isolation:isolate}
+.hero h1{text-shadow:0 8px 38px rgba(37,99,235,.14)}
+.hero .lead{max-width:720px}
+.tag{color:#FFB066}
+.three{gap:20px}
+.three>div,.box,article,.shot,details{
+  border-color:var(--bd);
+  box-shadow:0 18px 48px rgba(0,0,0,.20);
+}
+.three>div{background:linear-gradient(145deg,rgba(22,38,62,.82),rgba(9,17,30,.88));}
+.three>div:hover{border-color:var(--bd2);box-shadow:0 20px 52px rgba(0,0,0,.26),0 0 26px rgba(37,99,235,.08)}
+.box,article{background:linear-gradient(145deg,rgba(19,34,55,.94),rgba(10,18,31,.96))}
+.btn{min-height:46px;border-radius:12px;transition:transform .18s ease,box-shadow .22s ease,filter .22s ease}
+.btn.hot{
+  color:#10131B!important;
+  background:linear-gradient(110deg,#FF6A00 0%,#FF9A45 48%,#FF7414 100%);
+  background-size:200% 100%;
+  box-shadow:0 8px 26px rgba(255,106,0,.16);
+}
+.btn.hot:hover{background-position:100% 0;box-shadow:0 11px 32px rgba(255,106,0,.27);transform:translateY(-1px)}
+input,select,textarea{background:rgba(7,13,24,.82);border-color:rgba(120,151,194,.38)}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px var(--ring)}
+.auth{background:linear-gradient(150deg,rgba(18,33,54,.97),rgba(8,15,27,.98));border-color:rgba(110,157,224,.30)}
+footer{background:rgba(7,13,24,.88)}
+@media(max-width:640px){.ambient-glow{opacity:.58;filter:blur(32px)}.bar{min-height:58px}}
+@media(prefers-reduced-motion:reduce){
+  .ambient-glow{animation:none;transform:none}
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important}
+}
+
+</style>
+</head>
+<body>
+<div class="ambient-glow" aria-hidden="true"></div>
+<a class="skip" href="#content">Skip to content</a>
+<header><div class="bar"><a class="logo" href="#home"><img src="assets/logo.png" alt="TECHNOLOGIC AI POWER"></a>
+<a class="back" href="#home">← Back to website</a>
+<nav id="nav" aria-label="Main">
+<div class="acc"><a class="si" href="#signin">Sign In</a><a class="btn sm hot" href="#create">Create Account</a></div>
+<a href="#discover">Discover</a><a href="#get">Downloads</a><a href="#next">What’s Next</a>
+<div class="dd"><button aria-haspopup="true">Resources</button><div class="menu"><a href="#docs">Documentation</a><a href="#tools">AI Tools</a><a href="#news">News &amp; Updates</a><a href="#faq">FAQ</a></div></div>
+<div class="dd"><button aria-haspopup="true">Support</button><div class="menu"><a href="#help">Help Center</a><a href="#trust">System &amp; Trust</a><a href="#contact">Contact</a><a href="#sponsor">Support TECHNOLOGIC</a></div></div></nav>
+<div class="acc" id="acc2"></div>
+<button class="burger" aria-expanded="false" aria-controls="nav">Menu</button></div></header>
+<main id="content" tabindex="-1"></main>
+<footer><div class="in">
+<div><b>Product</b><a href="#discover">Discover</a><a href="#get">Downloads</a><a href="#next">What’s Next</a></div>
+<div><b>Resources</b><a href="#docs">Documentation</a><a href="#tools">AI Tools</a><a href="#news">News &amp; Updates</a><a href="#faq">FAQ</a></div>
+<div><b>Support</b><a href="#help">Help Center</a><a href="#trust">System &amp; Trust</a><a href="#contact">Contact</a><a href="#sponsor">Support TECHNOLOGIC</a></div>
+<div><b>Legal</b><a href="#legal">Privacy Policy</a><a href="#legal">Terms of Service</a><a href="#legal">All policies</a><a href="#plan">Site plan</a></div></div>
+<p class="fine">TECHNOLOGIC AI POWER · The Future of Technology. © TECHNOLOGIC. Social links and contact details will be added once provided.</p></footer>
+<script>
+// Site configuration: edit here, not in the page code.
+const RELEASE={label:'First release',date:'1 December 2026',status:'Planned — not yet released',os:'Windows',size:null,url:null,min:null,rec:null};
+const PLANS=[];
+const NEWS=[{d:'4 November 2026',t:'New website design',s:'The website is being refined ahead of the planned first release on 1 December 2026.'}];
+const DOCS={'Getting Started':['What is AI POWER?','Installation','First launch','Initial setup','First steps'],'System Setup':['System requirements','Permissions','Startup preferences','Device preparation'],'AI Models':['Understanding models','Model storage','Model selection','Troubleshooting'],'Performance':['CPU, GPU, RAM and storage','Resource allocation','Power and battery'],'Troubleshooting':['Common errors','Installation problems','Known issues','Report a problem']};
+const TOOLS=[{n:'Example tool A',c:'Local AI Models',l:'Local'},{n:'Example tool B',c:'Coding Tools',l:'Cloud'},{n:'Example tool C',c:'Productivity',l:'Local'}];
+const FAQ=[['Is AI POWER available to download?','The planned first release date is 1 December 2026. A download package has not been published on this site yet, so the button stays disabled until it is.'],['Does it work offline?','Running AI locally is the goal. Offline behaviour will be documented once it has been tested.'],['Do I need an account?','Browsing needs no account. Whether the app requires one will be stated here before release.'],['Which systems are supported?','Windows. Exact requirements are not yet confirmed.']];
+const SHOTS={chat:'assets/screens/chat.jpg',perm:'assets/screens/perm.jpg',models:'assets/screens/models.jpg'};
+const $=s=>document.querySelector(s),main=$('#content');
+const shot=(k,c,x)=>`<figure class="shot" style="margin:${x||'40px 0 0'}"><img src="${SHOTS[k]}" alt="${c}" loading="lazy"></figure><p class="cap">${c}</p>`;
+const NC='<span class="lab">Not yet confirmed</span>';
+const f=(id,l,t,e)=>`<label for="${id}">${l}</label><input id="${id}" name="${id}" type="${t||'text'}" ${e||''}>`;
+// Supabase project configuration. Replace the public anon key with the key from
+// Supabase Dashboard > Project Settings > API Keys. Never put a service_role key here.
+const SUPABASE_URL='https://caqfzpsgznzlayedbuea.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_7FYujlAL1-JQRXRpE5YAOA_UtwD4Ffz';
+const authReady=()=>SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('PASTE_');
+const authHeaders=()=>({'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY});
+const authRequest=async(path,body,token,redirectTo)=>{const h=authHeaders();if(token)h.Authorization='Bearer '+token;const target=redirectTo?path+'?redirect_to='+encodeURIComponent(redirectTo):path;const r=await fetch(SUPABASE_URL+target,{method:'POST',headers:h,body:JSON.stringify(body)});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.msg||data.message||data.error_description||data.error||'Request failed. Please try again.');return data};
+const saveSession=data=>{if(data.access_token)sessionStorage.setItem('tp_auth_session',JSON.stringify(data))};
+const getSession=()=>{try{return JSON.parse(sessionStorage.getItem('tp_auth_session')||'null')}catch{return null}};
+const clearSession=()=>sessionStorage.removeItem('tp_auth_session');
+const authMessage=(formEl,text,kind='warn')=>{const m=formEl.querySelector('.msg');m.className='msg '+kind;m.textContent=text};
+const form=(n,m,fields,b)=>`<form data-m="${m}" novalidate>${fields}<div class="row" style="margin-top:20px"><button class="btn" type="submit">${b}</button></div><div class="msg" role="status" aria-live="polite"></div></form>`;
+const tbl=(h,r)=>`<div class="wrap"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${r.map(x=>`<tr>${x.map(y=>`<td>${y}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const NA='Accounts are not available yet. Nothing was created or sent.',NF='This form is not connected yet, so nothing was sent or saved.';
+const P={
+home:()=>`<section class="hero c"><p class="tag">TECHNOLOGIC AI POWER</p><h1>Local AI,<br>designed around your PC.</h1><p class="lead">A Windows desktop assistant for running AI models and agents on your own computer.</p><div class="row" style="margin-top:28px"><a class="btn" href="#discover">Explore AI POWER</a><a class="btn alt" href="#get">Explore Downloads</a></div>${shot('chat','The current Windows application. No AI engine is connected yet.')}</section>
+<section><div class="three"><div><h3>Choose the task</h3><p class="mu">You pick the kind of task, so the app does not have to guess.</p></div><div><h3>Fit your PC</h3><p class="mu">The goal is to match models and resources to your hardware. This is in development.</p></div><div><h3>Stay in control</h3><p class="mu">You decide what the app may access, and can change it later.</p></div></div></section>
+<section><p class="tag">What’s next</p><h2>The direction of AI POWER.</h2><p class="lead">Local models, smarter resource management and agents are planned. Nothing is promised until it is ready.</p><p><a href="#next">See what’s next ›</a></p></section>
+<section><p class="tag">Latest</p>${NEWS.map(n=>`<h3>${n.t}</h3><p class="mu">${n.d}. ${n.s}</p>`).join('')}<a href="#news">All updates ›</a></section>`,
+discover:()=>`<section class="hero c"><p class="tag">Discover</p><h1>AI POWER.</h1><p class="lead">A calm desktop workspace for local AI. Here is what exists today and what is still being built.</p></section>
+<section><h2>Pick a task. Start working.</h2><p class="lead">Ten task types, a model selector and a resource panel sit around a simple chat.</p>${shot('chat','Chat workspace. The resource panel shows placeholders, not measurements.')}</section>
+<section><h2>You decide what it can do.</h2><p class="lead">Files, tasks, system information, network and startup each have their own clear setting. These are app preferences, and Windows may ask separately.</p>${shot('perm','Access &amp; Permissions screen')}</section>
+<section><h2>Your models, in one place.</h2><p class="lead">The AI Models screen is a prototype with sample data. Real model management is planned.</p>${shot('models','AI Models screen with sample data')}</section>
+<section><h2>Today and later</h2>${tbl(['Capability','Status'],[['Windows application interface','Available as a prototype'],['Running local AI models','Planned'],['Resource manager','Planned'],['Agents','Planned']])}</section>`,
+get:()=>`<section class="hero"><p class="tag">Downloads</p><h1>Download AI POWER.</h1><p class="lead">${RELEASE.label} · planned for ${RELEASE.date}</p></section>
+<section style="padding-top:0"><dl><div><dt>Planned release</dt><dd>${RELEASE.date}</dd></div><div><dt>Status</dt><dd>${RELEASE.status}</dd></div><div><dt>Operating system</dt><dd>${RELEASE.os}</dd></div><div><dt>Package size</dt><dd>${RELEASE.size||NC}</dd></div><div><dt>Download</dt><dd>${RELEASE.url?'Available':'Not published on this site yet'}</dd></div></dl>
+<div class="row" style="margin-top:28px">${RELEASE.url?`<a class="btn hot" href="${RELEASE.url}">Download for ${RELEASE.os}</a>`:`<button class="btn" disabled>Download not available yet</button>`}<a class="btn alt" href="#docs">Documentation</a></div>${RELEASE.url?'':'<p class="note" style="margin-top:18px">The installer has not been published on this site yet. This page will show the download as soon as it is.</p>'}</section>
+<section><h2>System requirements</h2>${tbl(['','Minimum','Recommended'],[['Operating system',RELEASE.min||NC,RELEASE.rec||NC],['CPU',NC,NC],['Memory',NC,NC],['Graphics',NC,NC],['Storage',NC,NC]])}<p class="mu">Requirements will be published after testing on real hardware.</p></section>
+<section><h2>Get started</h2><ol class="mu" style="padding-left:20px"><li>Download the installer when it is available.</li><li>Run it and follow the installation steps (they will be added with the package).</li><li>On first launch, sign in or continue as a guest.</li><li>Answer the setup question, let the app prepare your PC, and review the permissions.</li></ol></section>
+<section><h2>Known issues</h2><p class="mu">None listed.</p><h2 style="margin-top:48px">Questions</h2>${FAQ.map(q=>`<details><summary>${q[0]}</summary><p class="mu">${q[1]}</p></details>`).join('')}<p style="margin-top:20px"><a href="#docs">Documentation ›</a> &nbsp; <a href="#help">Technical support ›</a></p></section>`,
+next:()=>`<section class="hero"><p class="tag">What’s Next</p><h1>The next AI POWER.</h1><p class="lead">A short, honest view of where the product is heading.</p></section>
+<section style="padding-top:0"><h2>Vision</h2><p class="lead">Local AI that adapts to the computer it runs on, instead of demanding a powerful one.</p></section>
+<section><h2>Planned</h2>${tbl(['Improvement','Status'],[['Local model engine','Planned'],['Resource manager','Planned'],['Reasoning scheduler','Planned'],['Agents','Planned']])}<p class="mu">Labels will change to In Development, Testing or Available as work progresses.</p></section>
+<section><h2>Progress</h2><p class="mu">No progress updates have been published yet. They will appear here and in <a href="#news">News &amp; Updates</a>.</p></section>
+<section><h2>Pricing and purchasing</h2><p class="mu">Not decided. ${PLANS.length?'':'No plans or prices are set. '}Nothing can be bought or preordered yet, and no payment is taken on this site.</p><div class="box" style="max-width:520px;margin-top:20px"><h3>Join the waitlist</h3><p class="mu">Get a message when there is news. Unsubscribe at any time.</p>${form('Waitlist',NF,f('wl','Email','email','required autocomplete="email"')+'<label style="display:flex;gap:10px;align-items:center"><input type="checkbox" required style="width:auto"> I agree to be contacted about the next release</label>','Join the waitlist')}</div></section>`,
+docs:()=>`<section class="hero"><p class="tag">Resources</p><h1>Documentation.</h1><p class="lead">An outline for now. Articles will be written for features that exist.</p></section><div class="docs"><aside><input id="dq" placeholder="Search" aria-label="Search articles"><div id="dnav"></div></aside><article id="dart"><h3>Select an article</h3></article></div>`,
+tools:()=>`<section class="hero"><p class="tag">Resources</p><h1>AI Tools.</h1><p class="lead">A directory of tools. The entries below are placeholders until verified.</p></section><div class="row"><input id="tq" placeholder="Search" aria-label="Search tools" style="max-width:240px"><select id="tc" aria-label="Category" style="max-width:220px"><option value="">All categories</option>${[...new Set(TOOLS.map(t=>t.c))].map(c=>`<option>${c}</option>`).join('')}</select><select id="tl" aria-label="Local or cloud" style="max-width:180px"><option value="">Local or cloud</option><option>Local</option><option>Cloud</option></select></div><div id="tlist" style="margin-top:20px"></div>`,
+news:()=>`<section class="hero"><p class="tag">Resources</p><h1>News &amp; Updates.</h1></section>${NEWS.map(n=>`<article><h3>${n.t}</h3><p class="mu">${n.d}</p><p>${n.s}</p></article>`).join('')}<h2 style="margin-top:56px">Release notes</h2><p class="mu">Release notes will appear here with each release.</p>`,
+faq:()=>`<section class="hero"><p class="tag">Resources</p><h1>FAQ.</h1></section>${FAQ.map(q=>`<details><summary>${q[0]}</summary><p class="mu">${q[1]}</p></details>`).join('')}`,
+help:()=>`<section class="hero"><p class="tag">Support</p><h1>Help Center.</h1><p class="lead">Find an answer or write to us.</p></section><input id="hq" placeholder="Search help" aria-label="Search help" style="max-width:360px"><div id="hl">${FAQ.map(q=>`<details><summary>${q[0]}</summary><p class="mu">${q[1]}</p></details>`).join('')}</div>
+<section><h2>Contact support</h2><div class="box" style="max-width:600px">${form('Support',NF,f('sn','Name','text','required')+f('se','Email','email','required')+'<label for="sc">Category</label><select id="sc"><option>Installation</option><option>Bug report</option><option>Feature request</option><option>Account</option><option>Privacy</option></select>'+f('ss','Subject','text','required')+'<label for="sd">Description</label><textarea id="sd" rows="5" required></textarea>','Send request')}</div><p class="mu">Ticket numbers and email replies need the support backend, which is not active yet.</p></section>`,
+trust:t=>{t=t||'privacy';const T={privacy:['Privacy &amp; Security','<p class="lead">This site currently collects nothing: its forms are not connected. A full privacy policy needs legal review. Website data and desktop-app behaviour will be described separately, and only verified claims will be made.</p>'],status:['Release Status',`<dl><div><dt>Planned first release</dt><dd>${RELEASE.date}</dd></div><div><dt>Download</dt><dd>${RELEASE.url?'Available':'Not published yet'}</dd></div><div><dt>Known issues</dt><dd>None listed</dd></div><div><dt>Maintenance</dt><dd>None announced</dd></div></dl><p class="mu">Manually maintained, not live monitoring.</p>`],requirements:['System Requirements',`${tbl(['','Minimum','Recommended'],[['Operating system',NC,NC],['CPU',NC,NC],['Memory',NC,NC],['Graphics',NC,NC],['Storage',NC,NC]])}`]};
+return `<section class="hero"><p class="tag">Support</p><h1>System &amp; Trust.</h1></section><div class="tabs"><a href="#trust" ${t==='privacy'?'aria-current="page"':''}>Privacy &amp; Security</a><a href="#status" ${t==='status'?'aria-current="page"':''}>Release Status</a><a href="#requirements" ${t==='requirements'?'aria-current="page"':''}>Requirements</a></div><h2>${T[t][0]}</h2>${T[t][1]}`},
+contact:()=>`<section class="hero"><p class="tag">Support</p><h1>Contact.</h1><p class="lead">Contact details will appear here once provided. For now, use the <a href="#help">Help Center</a>.</p></section>`,
+sponsor:()=>`<section class="hero"><p class="tag">Support</p><h1>Support TECHNOLOGIC.</h1><p class="lead">Optional. A voluntary contribution is not a purchase, license, preorder or paid support, and it promises no rewards.</p></section><p class="mu" style="max-width:640px">It could help with development time, testing on different hardware, documentation, hosting and security. Nothing here is tax-deductible unless that is verified.</p><div class="box" style="max-width:480px;margin-top:24px"><p class="mu">Amounts have not been set.</p><button class="btn" disabled>Payments are not enabled</button></div>`,
+legal:()=>`<section class="hero"><p class="tag">Legal</p><h1>Policies.</h1><p class="lead">No legal text has been written yet. Drafts must be reviewed for your jurisdiction.</p></section>${tbl(['Policy','Status'],['Terms of Service','Privacy Policy','Refund and Cancellation (before any sales)','License and Usage Terms','Cookie Policy (if needed)','Accessibility statement'].map(x=>[x,'<span class="lab">Draft needed</span>']))}`,
+plan:()=>`<section class="hero"><p class="tag">Site plan</p><h1>What needs a backend.</h1></section>${tbl(['Feature','Now','Needs'],[['Pages and navigation','Done','—'],['Downloads','Config-driven','Real files and signed links'],['Accounts','Supabase Auth connected; tested by owner','Profile table, session hardening, email-flow verification'],['Waitlist and support forms','Layout only','Database, validation, email'],['Pricing, preorders, donations','Not available','Payment provider, legal terms'],['Docs, news, tools','Config data','Database and an admin area with roles']])}<p class="mu">Suggested stack, for you to confirm: Next.js with TypeScript, PostgreSQL, an auth service, hosted checkout from a payment provider, an email service, object storage for installers, and an admin area with role-based access.</p>`,
+signin:()=>`<div class="auth"><p class="tag c">WELCOME BACK</p><h1>Sign in</h1><p class="mu c">Access your TECHNOLOGIC AI POWER account.</p>${form('Sign in','',f('a1','Email','email','required autocomplete="email"')+f('a2','Password','password','required autocomplete="current-password"'),'Sign in')}<p class="mu c" style="margin-top:20px"><a href="#reset">Forgot password?</a> · <a href="#create">Create account</a></p></div>`,
+create:()=>`<div class="auth"><p class="tag c">JOIN TECHNOLOGIC</p><h1>Create your account</h1><p class="mu c">Create an account to manage your TECHNOLOGIC experience.</p>${form('Create','',f('c1','Full name','text','required minlength="2" autocomplete="name"')+f('c2','Email address','email','required autocomplete="email"')+f('c3','Password','password','required minlength="8" autocomplete="new-password"')+f('c4','Confirm password','password','required minlength="8" autocomplete="new-password"'),'Create account')}<p class="mu c" style="margin-top:20px">Already have an account? <a href="#signin">Sign in</a></p><p class="fine c" style="margin-top:16px">Your account is protected by Supabase Authentication. Email confirmation may be required.</p></div>`,
+reset:()=>`<div class="auth"><p class="tag c">ACCOUNT SECURITY</p><h1>Reset password</h1><p class="mu c">We’ll send a password reset link to your email.</p>${form('Reset','',f('r1','Email address','email','required autocomplete="email"'),'Send reset link')}<p class="mu c" style="margin-top:20px"><a href="#signin">Back to sign in</a></p></div>`,
+dashboard:()=>`<div class="auth" style="max-width:560px"><p class="tag c">YOUR SPACE</p><h1>Your account</h1><p class="mu c" id="account-status">Loading your account…</p><dl id="account-details" style="margin-top:28px"></dl><div class="row" style="margin-top:24px"><button class="btn alt" id="signout" type="button">Sign out</button></div></div>`
+};
+const AC=['signin','create','reset','dashboard'],TT={home:'',discover:'Discover',get:'Downloads',next:'What’s Next',docs:'Documentation',tools:'AI Tools',news:'News & Updates',faq:'FAQ',help:'Help Center',trust:'System & Trust',status:'Release Status',requirements:'Requirements',contact:'Contact',sponsor:'Support TECHNOLOGIC',legal:'Policies',plan:'Site plan',signin:'Sign in',create:'Create account',reset:'Reset password',dashboard:'Account'};
+function route(){let k=(location.hash||'#home').slice(1);if(!(k in TT))k='home';
+ main.innerHTML=['status','requirements'].includes(k)?P.trust(k):k==='trust'?P.trust('privacy'):P[k]();
+ document.body.classList.toggle('acct',AC.includes(k));document.title=(TT[k]?TT[k]+' · ':'')+'TECHNOLOGIC AI POWER';
+ document.querySelectorAll('nav a[href]').forEach(a=>a.getAttribute('href')==='#'+k?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ $('#nav').classList.remove('open');$('.burger').setAttribute('aria-expanded','false');window.scrollTo(0,0);
+ if(k==='tools')tools();if(k==='docs')docs();if(k==='dashboard')loadAccount();}
+async function loadAccount(){
+ const status=$('#account-status'),details=$('#account-details'),out=$('#signout');if(!status||!details)return;
+ const session=getSession();if(!session?.access_token){status.textContent='You are not signed in.';details.innerHTML='<div><dt>Account</dt><dd><a href="#signin">Sign in</a></dd></div>';out.textContent='Back to sign in';out.onclick=()=>location.hash='#signin';return}
+ try{const r=await fetch(SUPABASE_URL+'/auth/v1/user',{headers:{apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+session.access_token}});const user=await r.json();if(!r.ok)throw new Error(user.message||'Your session has expired.');
+ status.textContent='You are signed in.';details.innerHTML=`<div><dt>Name</dt><dd>${escapeHtml(user.user_metadata?.full_name||'—')}</dd></div><div><dt>Email</dt><dd>${escapeHtml(user.email||'—')}</dd></div><div><dt>Email verified</dt><dd>${user.email_confirmed_at?'Confirmed':'Pending confirmation'}</dd></div>`;
+ }catch(err){clearSession();status.textContent=err.message;details.innerHTML='<div><dt>Session</dt><dd>Sign in again to continue.</dd></div>'}
+ out.textContent='Sign out';out.onclick=()=>{clearSession();location.hash='#signin'};
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function tools(){const q=$('#tq'),c=$('#tc'),l=$('#tl'),o=$('#tlist');const go=()=>{const r=TOOLS.filter(t=>(!c.value||t.c===c.value)&&(!l.value||t.l===l.value)&&t.n.toLowerCase().includes(q.value.toLowerCase()));o.innerHTML=r.length?r.map(t=>`<details open><summary>${t.n} <span class="lab">Placeholder</span></summary><p class="mu">${t.c} · ${t.l}. Pricing, licence and review date: not verified.</p></details>`).join(''):'<p class="mu">No tools match.</p>'};[q,c,l].forEach(e=>e.addEventListener('input',go));go()}
+function docs(){const q=$('#dq'),n=$('#dnav'),a=$('#dart');let cur='';const draw=()=>{n.innerHTML=Object.entries(DOCS).map(([g,l])=>{const m=l.filter(x=>x.toLowerCase().includes(q.value.toLowerCase()));return m.length?`<h3 style="font-size:13px;margin-top:18px" class="mu">${g}</h3><ul>${m.map(x=>`<li><button data-g="${g}" data-t="${x}" ${x===cur?'aria-current="true"':''}>${x}</button></li>`).join('')}</ul>`:''}).join('')};q.addEventListener('input',draw);n.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cur=b.dataset.t;a.innerHTML=`<p class="mu">${b.dataset.g} › ${cur}</p><h2>${cur}</h2><p class="mu">This article will be written once the feature exists. Last updated: not published. See the <a href="#help">Help Center</a>.</p>`;draw()});draw()}
+main.addEventListener('submit',async e=>{
+ const fm=e.target.closest('form[data-m]');if(!fm)return;e.preventDefault();
+ if(!fm.checkValidity()){fm.reportValidity();authMessage(fm,'Please complete all required fields correctly.','err');return}
+ const page=(location.hash||'#home').slice(1);
+ if(!['create','signin','reset'].includes(page)){authMessage(fm,fm.dataset.m||'This form is not connected yet.','warn');return}
+ if(!authReady()){authMessage(fm,'Supabase is not fully configured yet. Add the project public anon/publishable key in the site configuration before creating accounts.','warn');return}
+ const btn=fm.querySelector('button[type="submit"]');btn.disabled=true;btn.textContent='Please wait…';
+ try{
+  if(page==='create'){
+   const name=$('#c1').value.trim(),email=$('#c2').value.trim(),password=$('#c3').value,confirm=$('#c4').value;
+   if(password!==confirm)throw new Error('The passwords do not match.');
+   if(password.length<8)throw new Error('Password must be at least 8 characters.');
+   const data=await authRequest('/auth/v1/signup',{email,password,data:{full_name:name}},null,location.origin+location.pathname+'#signin');
+   if(data.access_token)saveSession(data);
+   authMessage(fm,data.access_token?'Your account was created successfully. You can now continue to your account.':'Account request received. Check your email to confirm your address, then sign in.','ok');
+   if(data.access_token)setTimeout(()=>location.hash='#dashboard',900);
+  }else if(page==='signin'){
+   const data=await authRequest('/auth/v1/token?grant_type=password',{email:$('#a1').value.trim(),password:$('#a2').value});
+   saveSession(data);authMessage(fm,'Signed in successfully. Opening your account…','ok');setTimeout(()=>location.hash='#dashboard',650);
+  }else{
+   await authRequest('/auth/v1/recover',{email:$('#r1').value.trim()},null,location.origin+location.pathname+'#signin');
+   authMessage(fm,'If an account exists for this email, a password reset link will be sent.','ok');
+  }
+ }catch(err){authMessage(fm,err.message||'Something went wrong. Please try again.','err')}
+ finally{btn.disabled=false;btn.textContent=page==='create'?'Create account':page==='signin'?'Sign in':'Send reset link'}
+});
+main.addEventListener('input',e=>{if(e.target.id!=='hq')return;const v=e.target.value.toLowerCase();document.querySelectorAll('#hl details').forEach(d=>d.style.display=d.textContent.toLowerCase().includes(v)?'':'none')});
+$('.burger').addEventListener('click',e=>{const o=$('#nav').classList.toggle('open');e.currentTarget.setAttribute('aria-expanded',o)});
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
